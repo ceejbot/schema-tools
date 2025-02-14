@@ -3,6 +3,7 @@
 #[cfg(feature = "semver")]
 pub mod bump_openapi;
 pub mod dereference;
+pub mod flatten_allof;
 pub mod merge_allof;
 pub mod merge_openapi;
 pub mod name;

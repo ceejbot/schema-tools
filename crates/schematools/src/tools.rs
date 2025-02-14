@@ -256,11 +256,12 @@ pub fn bump_suffix_number(phrase: &str) -> String {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Debug, Clone)]
 pub struct Filter {
     conditions: Vec<ConditionSet>,
 }
 
+#[derive(Default, Debug, Clone)]
 pub struct ConditionSet {
     conditions: Vec<Condition>,
 }
@@ -284,6 +285,7 @@ impl ConditionSet {
     }
 }
 
+#[derive(Debug, Clone)]
 struct Condition {
     pub field: String, // json pointer
     pub operator: ConditionOperator,
@@ -320,7 +322,7 @@ impl Condition {
     }
 }
 
-#[derive(Eq, PartialEq)]
+#[derive(Eq, PartialEq, Debug, Clone)]
 enum ConditionOperator {
     Eq,
     Eqq,

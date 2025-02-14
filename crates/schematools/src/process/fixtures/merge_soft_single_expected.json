@@ -1,0 +1,21 @@
+{
+    "definitions": {
+        "parent": {
+            "type": "object",
+            "required": ["color"],
+            "properties": {
+                "name": { "type": "string" },
+                "color": { "type": "string" }
+            }
+        },
+        "child": {
+            "type": "object",
+            "required": ["color"],
+            "properties": {
+                "name": { "type": "string" },
+                "color": { "type": "string" },
+                "fur-length": { "type": "string" }
+            }
+        }
+    }
+}

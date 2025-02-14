@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use crate::commands::GetSchemaCommand;
 use clap::{Parser, Subcommand};
+use schematools::process::flatten_allof;
 use schematools::storage::SchemaStorage;
 use schematools::tools;
 use schematools::Client;
@@ -27,6 +28,7 @@ impl Display for Opts {
             #[cfg(feature = "semver")]
             Command::BumpOpenapi(_) => write!(f, "bump_openapi"),
             Command::MergeAllOf(_) => write!(f, "merge_allof"),
+            Command::FlattenAllOf(_) => write!(f, "flatten_allof"),
             Command::Dereference(_) => write!(f, "dereference"),
             Command::Name(_) => write!(f, "name"),
             #[cfg(feature = "json-patch")]
@@ -46,6 +48,9 @@ pub enum Command {
 
     /// Merges each occurrence of allOf to one json schema
     MergeAllOf(MergeAllOfOpts),
+
+    /// A soft version of the allOf merge that does not touch single allOf instances.
+    FlattenAllOf(MergeAllOfOpts),
 
     /// Recursively resolves all $ref occurrences in a schema file
     Dereference(DereferenceOpts),
@@ -203,6 +208,15 @@ impl GetSchemaCommand for Opts {
 
                 Schema::load_urls(urls).map_err(Error::Schematools)
             }
+            Command::FlattenAllOf(opts) => {
+                let urls = opts
+                    .file
+                    .iter()
+                    .map(|s| path_to_url(s.clone()))
+                    .collect::<Result<Vec<_>, _>>()?;
+
+                Schema::load_urls(urls).map_err(Error::Schematools)
+            }
             Command::MergeOpenapi(opts) => Schema::load_url_with_client(
                 path_to_url(opts.file.clone()).map_err(Error::Schematools)?,
                 client,
@@ -244,6 +258,13 @@ impl Opts {
         match &self.command {
             Command::MergeAllOf(opts) => {
                 merge_allof::Merger::options()
+                    .with_leave_invalid_properties(opts.leave_invalid_properties)
+                    .with_filter(tools::Filter::new(&opts.filter)?)
+                    .process(schema, storage);
+                Ok(())
+            }
+            Command::FlattenAllOf(opts) => {
+                flatten_allof::Merger::options()
                     .with_leave_invalid_properties(opts.leave_invalid_properties)
                     .with_filter(tools::Filter::new(&opts.filter)?)
                     .process(schema, storage);
@@ -304,6 +325,13 @@ pub fn execute(opts: Opts, client: &Client) -> Result<(), Error> {
     // todo: ...
     match &opts.command {
         Command::MergeAllOf(o) => {
+            o.verbose.start()?;
+            opts.run(&mut schema, storage)?; // todo: ...
+            o.output.show(schema.get_body());
+
+            Ok(())
+        }
+        Command::FlattenAllOf(o) => {
             o.verbose.start()?;
             opts.run(&mut schema, storage)?; // todo: ...
             o.output.show(schema.get_body());
