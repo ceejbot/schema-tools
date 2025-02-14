@@ -1,0 +1,50 @@
+{
+    "definitions": {
+        "parent": {
+            "type": "object",
+            "required": ["species"],
+            "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                    "cat": "#/components/schemas/cat",
+                    "dog": "#/components/schemas/dog"
+                }
+            },
+            "properties": {
+                "name": { "type": "string" },
+                "color": { "type": "string" },
+                "species": { "type": "string" }
+            },
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/cat"
+                },
+                {
+                    "$ref": "#/definitions/dog"
+                }
+            ]
+        },
+        "cat": {
+            "type": "object",
+            "properties": {
+                "fur-length": { "type": "string " }
+            },
+            "allOf": [
+                {
+                    "$ref": "#/definitions/parent"
+                }
+            ]
+        },
+        "dog": {
+            "type": "object",
+            "properties": {
+                "hair-length": { "type": "string " }
+            },
+            "allOf": [
+                {
+                    "$ref": "#/definitions/parent"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "definitions": {
+        "parent1": {
+            "type": "object",
+            "required": ["color"],
+            "properties": {
+                "name": { "type": "string" },
+                "color": { "type": "string" }
+            }
+        },
+        "parent2": {
+            "type": "object",
+            "required": ["count"],
+            "properties": {
+                "leg-count": { "type": "number" }
+            }
+        },
+        "child": {
+            "type": "object",
+            "properties": {
+                "fur-length": { "type": "string" },
+                "leg-count": { "type": "number" },
+                "name": { "type": "string" },
+                "color": { "type": "string" }
+            },
+            "required": ["count", "color"]
+        }
+    }
+}

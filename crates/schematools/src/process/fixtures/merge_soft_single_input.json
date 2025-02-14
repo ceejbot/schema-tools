@@ -1,0 +1,23 @@
+{
+    "definitions": {
+        "parent": {
+            "type": "object",
+            "required": ["color"],
+            "properties": {
+                "name": { "type": "string" },
+                "color": { "type": "string" }
+            }
+        },
+        "child": {
+            "type": "object",
+            "properties": {
+                "fur-length": { "type": "string" }
+            },
+            "allOf": [
+                {
+                    "$ref": "#/definitions/parent"
+                }
+            ]
+        }
+    }
+}

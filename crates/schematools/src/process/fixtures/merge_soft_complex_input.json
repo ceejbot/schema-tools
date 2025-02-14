@@ -1,0 +1,69 @@
+{
+    "definitions": {
+        "TimeSpec": {
+            "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                    "absolute": "#/definitions/AbsoluteTime",
+                    "relative": "#/definitions/RelativeTime"
+                }
+            },
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/RelativeTime"
+                },
+                {
+                    "$ref": "#/definitions/AbsoluteTime"
+                }
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                }
+            },
+            "required": ["type"]
+        },
+        "AbsoluteTime": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/TimeSpec"
+                }
+            ],
+            "properties": {
+                "value": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "required": ["type"]
+        },
+        "RelativeTime": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/TimeSpec"
+                }
+            ],
+            "properties": {
+                "timeUnit": {
+                    "type": "string",
+                    "enum": ["year", "month", "week", "day", "hour", "minute", "second"]
+                },
+                "length": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "anchorGranularity": {
+                    "type": "string",
+                    "enum": ["year", "month", "week", "day", "hour", "minute", "second"]
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "required": ["type"]
+        }
+    }
+}
