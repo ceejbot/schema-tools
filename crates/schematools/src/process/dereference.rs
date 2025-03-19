@@ -85,7 +85,7 @@ fn process_ref(
     root: &mut Value,
     options: &DereferencerOptions,
     ctx: &mut DereferencerContext,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
 ) {
     assert!(ctx.depth < 50, "Infinite reference occurred!");
 
@@ -176,7 +176,7 @@ fn process_node(
     root: &mut Value,
     options: &DereferencerOptions,
     ctx: &mut DereferencerContext,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
 ) {
     match root {
         Value::Object(ref mut map) => {

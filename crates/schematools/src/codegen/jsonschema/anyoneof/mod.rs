@@ -17,14 +17,16 @@ pub fn from_one_or_any_of(
     schema: &Map<String, Value>,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Model, Error> {
     let mut extractor = schema
         .get("discriminator")
         .and_then(|data| {
-            extractor::Discriminator::new(data)
-                .map(|d| Box::new(d) as Box<dyn extractor::Extractor>)
+            extractor::Discriminator::new(data).map(|d| {
+                let extract: Box<dyn extractor::Extractor> = Box::new(d);
+                extract
+            })
         })
         .unwrap_or(Box::new(extractor::Simple::new()));
 
@@ -99,7 +101,7 @@ fn simplify_one_or_any_of(
     variants: &[Value],
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Option<Result<Model, Error>> {
     match variants.len() {

@@ -22,7 +22,16 @@ log = { workspace = true }
 thiserror = { workspace = true }
 
 clap = { version = "4.4", features = ["derive"] }
-env_logger = "0.10"
+env_logger = "0.11"
 sha2 = "0.10"
 
 schematools = { version = "0.20.1", path = "../schematools" }
+
+[lints.rust]
+unsafe_code = { level = "deny", priority = 1 }
+future_incompatible = { level = "deny", priority = 2 }
+trivial_casts = { level = "warn", priority = 3 }
+rust_2018_idioms = { level = "warn", priority = 4 }
+
+[lints.clippy]
+unwrap_used = "warn"

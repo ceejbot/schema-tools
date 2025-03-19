@@ -2,15 +2,16 @@ use super::{
     types::{Model, ModelType, WrapperType, WrapperTypeKind},
     JsonSchemaExtractOptions, ModelContainer,
 };
+use crate::resolver::SchemaResolver;
 use serde_json::{Map, Value};
 
-use crate::{error::Error, resolver::SchemaResolver, scope::SchemaScope};
+use crate::{error::Error, scope::SchemaScope};
 
 pub fn from_allof(
     schema: &Map<String, Value>,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Model, Error> {
     match schema.get("allOf") {
@@ -61,6 +62,7 @@ mod tests {
     use crate::codegen::jsonschema::types::FlatModel;
 
     use super::*;
+    use crate::resolver::SchemaResolver;
     use serde_json::json;
 
     #[test]

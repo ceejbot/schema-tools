@@ -213,6 +213,8 @@ impl Templates {
     }
 }
 
+static TRIM_CHARS: [char; 4] = ['{', '}', '#', ' '];
+
 impl Template {
     fn from_file(relative: String, path: PathBuf) -> Self {
         Template::File(FileTemplate { relative, path })
@@ -234,7 +236,7 @@ impl Template {
                 return Err(Error::CodegenFileSkipped);
             }
 
-            let params = super::format(first_line.trim_matches(&['{', '}', '#', ' '] as &[_]))?;
+            let params = super::format(first_line.trim_matches(&TRIM_CHARS))?;
 
             if let Some(serde_json::Value::String(min_version)) = params.get("min_version") {
                 let min = semver::Version::parse(min_version).map_err(Error::SemVersion)?;

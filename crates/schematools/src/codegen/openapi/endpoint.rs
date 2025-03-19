@@ -41,7 +41,7 @@ pub fn extract_endpoints(
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
     scontainer: &security::SecuritySchemes,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Vec<Endpoint>, Error> {
     resolver.resolve(node, scope, |node, scope| match node {
@@ -94,7 +94,7 @@ fn new_endpoint(
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
     scontainer: &security::SecuritySchemes,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Endpoint, Error> {
     match node {

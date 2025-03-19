@@ -45,7 +45,7 @@ fn process_merge(
     root: &mut Value,
     options: &MergerOptions,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
 ) {
     if !options.filter.check(root, true) {
         return log::info!("allOf skipped because of filter");
@@ -104,7 +104,7 @@ fn process_node(
     root: &mut Value,
     options: &MergerOptions,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
 ) {
     match root {
         Value::Object(ref mut map) => {

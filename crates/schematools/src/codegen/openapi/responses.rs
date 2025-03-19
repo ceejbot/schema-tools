@@ -36,7 +36,7 @@ pub fn extract(
     node: &Map<String, Value>,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Responses, Error> {
     match node.get("responses") {
@@ -58,7 +58,7 @@ pub fn extract_responses(
     node: &Value,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Responses, Error> {
     resolver.resolve(node, scope, |node, scope| match node {
@@ -139,7 +139,7 @@ pub fn extract_response(
     node: &Value,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Response, Error> {
     resolver.resolve(node, scope, |node, scope| match node {
@@ -213,7 +213,7 @@ fn as_header_node(
     name: &str,
     node: &Value,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
 ) -> Result<Value, Error> {
     resolver.resolve(node, scope, |node, _scope| {
         let mut parameter = node.clone();

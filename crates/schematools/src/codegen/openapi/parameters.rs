@@ -58,7 +58,7 @@ pub fn extract(
     node: &Map<String, Value>,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Parameters, Error> {
     match node.get("parameters") {
@@ -101,7 +101,7 @@ pub fn extract_parameter(
     node: &Value,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Parameter, Error> {
     resolver.resolve(node, scope, |node, scope| match node {

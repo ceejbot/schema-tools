@@ -28,22 +28,17 @@ pub trait GetSchemaCommand {
 }
 
 /// Parse a single key-value pair
-fn get_options<T>(
-    s: &str,
-) -> Result<(T, serde_json::Value), Box<dyn StdError + Send + Sync + 'static>>
+fn get_options<T>(s: &str) -> Result<(T, serde_json::Value), Box<dyn StdError + Send + Sync + 'static>>
 where
     T: std::str::FromStr,
     T::Err: StdError + Send + Sync + 'static,
 {
-    if s.contains("=~") {
-        let pos = s.find("=~").unwrap();
-
+    if let Some(pos) = s.find("=~") {
         Ok((s[..pos].parse()?, serde_json::from_str(&s[pos + 2..])?))
     } else {
         let pos = s
             .find('=')
             .ok_or_else(|| format!("invalid KEY=value: no `=` found in `{s}`"))?;
-
         Ok((s[..pos].parse()?, serde_json::to_value(&s[pos + 1..])?))
     }
 }
@@ -95,16 +90,15 @@ pub(crate) struct Output {
 impl Output {
     pub fn show(self: &Output, value: &Value) {
         let result = match self.output.as_str() {
-            "json" => serde_json::to_string_pretty(value).unwrap(),
-            "yaml" => serde_yaml::to_string(value).unwrap(),
+            "json" => serde_json::to_string_pretty(value).expect("Failed to serialize as json"),
+            "yaml" => serde_yaml::to_string(value).expect("Failed to serialize as yaml"),
             _ => panic!("Output format not supported"),
         };
 
         match &self.to_file {
             Some(filename) => {
-                let mut file = File::create(filename).unwrap();
-                file.write_all(result.as_bytes())
-                    .expect("Can't save file on disk");
+                let mut file = File::create(filename).expect("Unable to create output file");
+                file.write_all(result.as_bytes()).expect("Can't save file on disk");
             }
             None => {
                 println!("{result}");

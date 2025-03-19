@@ -11,7 +11,7 @@ pub fn from_object_with_additional_properties(
     schema: &Map<String, Value>,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Model, Error> {
     let name = super::title::extract_title(schema, scope, options)?;

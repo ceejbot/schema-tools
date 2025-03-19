@@ -10,7 +10,7 @@ pub fn from_const(
     schema: &Map<String, Value>,
     _container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    _resolver: &SchemaResolver,
+    _resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Model, Error> {
     let name = super::title::extract_title(schema, scope, options)?;

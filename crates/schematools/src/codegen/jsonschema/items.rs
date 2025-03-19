@@ -9,7 +9,7 @@ pub fn from_array(
     schema: &Map<String, Value>,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Model, Error> {
     match schema.get("items") {

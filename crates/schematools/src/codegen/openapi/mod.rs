@@ -277,7 +277,7 @@ pub fn get_content(
     data: &Map<String, Value>,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Option<Result<MediaModelsContainer, Error>> {
     data.get("content").and_then(|content| match content {

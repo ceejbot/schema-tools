@@ -24,7 +24,7 @@ pub fn extract(
     node: &Map<String, Value>,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Option<RequestBody>, Error> {
     match node.get("requestBody") {
@@ -43,7 +43,7 @@ pub fn extract_requestbody(
     node: &Value,
     scope: &mut SchemaScope,
     mcontainer: &mut ModelContainer,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<Option<RequestBody>, Error> {
     resolver.resolve(node, scope, |node, scope| match node {

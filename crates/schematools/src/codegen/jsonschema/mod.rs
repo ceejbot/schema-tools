@@ -22,7 +22,7 @@ use crate::{
     storage::SchemaStorage, tools,
 };
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ModelContainer {
     regexps: Vec<types::RegexpType>,
     formats: Vec<String>,
@@ -64,7 +64,12 @@ impl ModelContainer {
         model: types::Model,
     ) -> (Option<u32>, &types::Model) {
         if let types::ModelType::AnyType(_) = model.inner() {
-            log::error!("{}: trying to save anyType as model", scope);
+            log::error!(
+                "self={:?}; scope={}: trying to save anyType as model: {:?}",
+                self,
+                scope,
+                model
+            );
             return (None, &self.any);
         }
 
@@ -209,7 +214,7 @@ pub fn add_types(
     node: &Value,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<(), Error> {
     let model = extract_type(node, container, scope, resolver, options)?;
@@ -221,7 +226,7 @@ pub fn extract_type(
     node: &Value,
     container: &mut ModelContainer,
     scope: &mut SchemaScope,
-    resolver: &SchemaResolver,
+    resolver: &SchemaResolver<'_>,
     options: &JsonSchemaExtractOptions,
 ) -> Result<types::Model, Error> {
     resolver.resolve(node, scope, |node, scope| {

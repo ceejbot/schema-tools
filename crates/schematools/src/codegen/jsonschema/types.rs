@@ -654,7 +654,7 @@ impl PrimitiveType {
     pub fn from(
         schema: &Map<String, Value>,
         scope: &mut SchemaScope,
-        _resolver: &SchemaResolver,
+        _resolver: &SchemaResolver<'_>,
         options: &JsonSchemaExtractOptions,
     ) -> Self {
         let type_ = schema.get("type").unwrap().as_str().unwrap().to_string();
