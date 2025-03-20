@@ -40,63 +40,63 @@ pub fn camelcase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value>
     let s = try_get_value!("camelcase", "value", String, value);
     let case = s.to_camel_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn snakecase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("snakecase", "value", String, value);
     let case = s.to_snake_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn upper_snakecase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("upper_snakecase", "value", String, value);
     let case = s.to_screaming_snake_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn kebabcase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("kebabcase", "value", String, value);
     let case = s.to_kebab_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn traincase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("traincase", "value", String, value);
     let case = s.to_train_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn titlecase(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("titlecase", "value", String, value);
     let case = s.to_title_case();
 
-    Ok(to_value(case).unwrap())
+    Ok(to_value(case).unwrap_or_default())
 }
 
 pub fn lcfirst(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let s = try_get_value!("lcfirst", "value", String, value);
     let lcfirst = s[..1].to_ascii_lowercase() + &s[1..];
 
-    Ok(to_value(lcfirst).unwrap())
+    Ok(to_value(lcfirst).unwrap_or_default())
 }
 
 pub fn ucfirst(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let o = try_get_value!("ucfirst", "value", String, value);
     let ucfirst = o[..1].to_ascii_uppercase() + &o[1..];
 
-    Ok(to_value(ucfirst).unwrap())
+    Ok(to_value(ucfirst).unwrap_or_default())
 }
 
 pub fn nospaces(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
     let mut s = try_get_value!("nospaces", "value", String, value);
     s.retain(|c| !c.is_whitespace());
 
-    Ok(to_value(s).unwrap())
+    Ok(to_value(s).unwrap_or_default())
 }
 
 pub fn path_parts(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {
@@ -111,7 +111,7 @@ pub fn path_parts(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Va
         .unwrap()
         .replace_all(&data, to.as_str());
 
-    Ok(to_value(path).unwrap())
+    Ok(to_value(path).unwrap_or_default())
 }
 
 pub fn when_numeric(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {
@@ -125,7 +125,7 @@ pub fn when_numeric(value: &Value, args: &HashMap<String, Value>) -> TeraResult<
 
         Ok(to_value(format!("{prefix}{value}")).unwrap())
     } else {
-        Ok(to_value(value).unwrap())
+        Ok(to_value(value).unwrap_or_default())
     }
 }
 
@@ -154,7 +154,7 @@ pub fn filter_not(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Va
         })
         .collect::<Vec<_>>();
 
-    Ok(to_value(arr).unwrap())
+    Ok(to_value(arr).unwrap_or_default())
 }
 
 pub fn filter_startswith(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {

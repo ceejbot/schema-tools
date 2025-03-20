@@ -3,7 +3,13 @@
 [![build](https://github.com/kstasik/schema-tools/workflows/build/badge.svg)](https://github.com/kstasik/schema-tools/actions)
 [![tests](https://github.com/kstasik/schema-tools/workflows/test/badge.svg)](https://github.com/kstasik/schema-tools/actions)
 
-# Introduction
+## About this fork
+
+This fork has some internal cleanup by ceej that makes it vary a bit from its upstream. Enforcement of my preferred linting rules is the major one, as is some internal refactoring/trait extraction. There is also some new functionality.
+
+I have done all this without yet discussing it with the library owners! But I would be happy to contribute any or all of it upstream if I can find time to discuss. In the meantime, please take anything you find relevant to your use cases.
+
+## Introduction
 
 Just another approach to openapi/jsonschema code generator. It's a home project written in `Rust`, simple all-in-one console tool with features like:
 
@@ -28,13 +34,13 @@ Main differences in approach between other solutions like `openapi-generator`:
 - codegen executed per microservice approach (not as a separate, generic client library)
 - json-schema registry support, TODO: shared models - create one model for shared structures in different clients/servers to avoid mapping same structures
 
-# General rules
+## General rules
 
 - All commands support yaml and json files.
 - Use help to get list of available arguments `schema-tools process --help`
 - `-v`, `-vv`, `-vvv`, `-vvvv` verbosity levels
 
-# Validate
+## Validate
 
 To validate openapi specification:
 
@@ -110,13 +116,13 @@ It's useful to perform such thing before code generation taking into account tha
 If openapi you received seems broken you may fix it and create [json-patch](http://jsonpatch.com/) file:
 
 ```
-schematools process patch <file> create <original-file> 
+schematools process patch <file> create <original-file>
 ```
 
 Then you can apply such patch to original openapi file during processing:
 
 ```
-schematools process patch <file> apply <patch-file> 
+schematools process patch <file> apply <patch-file>
 ```
 
 ### Merge openapi and bump
@@ -238,7 +244,7 @@ All commands take same arguments as they were executed separately. The only diff
 schematools chain -vvvv \
    -c 'process merge-all-of --leave-invalid-properties specifications/api.yaml' \
    -c 'process name - --resource-method-version --overwrite' \
-   -c 'validate openapi - ' 
+   -c 'validate openapi - '
    -c 'codegen openapi - \
         --template codegen/server/ \
         --format "gofmt -w" \

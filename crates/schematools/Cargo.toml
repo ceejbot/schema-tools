@@ -48,4 +48,4 @@ trivial_casts = { level = "warn", priority = 3 }
 rust_2018_idioms = { level = "warn", priority = 4 }
 
 [lints.clippy]
-unwrap_used = "warn"
+#unwrap_used = "warn"

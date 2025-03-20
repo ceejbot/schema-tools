@@ -236,7 +236,7 @@ impl Template {
                 return Err(Error::CodegenFileSkipped);
             }
 
-            let params = super::format(first_line.trim_matches(&TRIM_CHARS))?;
+            let params = super::format(first_line.trim_matches(TRIM_CHARS))?;
 
             if let Some(serde_json::Value::String(min_version)) = params.get("min_version") {
                 let min = semver::Version::parse(min_version).map_err(Error::SemVersion)?;
